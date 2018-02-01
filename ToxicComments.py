@@ -52,13 +52,24 @@ df_dict['total'] = train
 df_dict['vanilla'] = train.query('toxic==0 and severe_toxic==0 and obscene==0 and threat==0 and insult==0 and identity_hate==0')
 
 for label in labels[1:-1]:
-	df_dict[label] = train.query(label)
+	df_dict[label] = train.query(label + '==1')
 
+# Concat the individual comments in each category to a large text whose statistics can be analyzed
 subtexts = {}
+# County the number of comments in each category
 counts = {}
+# Whithin each category, find the mean of linguistic_diversity
 mean_diversity = {}
+# Within each category, find the mean length of comments
 mean_length = {}
+# For each category, get the frequency distribution
+frequency_distributions = {}
+# Convert frequencies from absolute counts to fractions of occurences. Not yet implemented
+frac_freq = {}
+# Frequency distribution over words over some minimum length (currently 4)
+big_word_freq = {}
 
+# Fill out the above dictionaries
 for label in labels:
 	df = df_dict[label]
 	mean_diversity[label] = df['lexical_diversity'].mean()
@@ -68,6 +79,10 @@ for label in labels:
 	for index, row in df.iterrows():
 		subtexts[label] += row['comment_text_tokenized']
 		counts[label] += 1
+	frequency_distributions[label] = nltk.FreqDist(subtexts[label])
+	big_word_text = [w for w in subtexts[label] if len(w)>4]
+	big_word_freq[label] = nltk.FreqDist(big_word_text)
+	
 
 print
 
@@ -82,6 +97,11 @@ print
 print counts
 
 print
+
+for label in labels:
+	print label
+	print big_word_freq[label].most_common(12)
+	print
 
 # Save modified csv
 train.to_csv("train_dec.csv")
