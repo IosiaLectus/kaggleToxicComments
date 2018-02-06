@@ -3,7 +3,7 @@
 # Use the sklearn and nltk to classify toxic comments.
 
 # Import useful packages
-import pandas, nltk
+import pandas, nltk, re
 
 import numpy as np
 import csv as csv
@@ -14,8 +14,8 @@ from nltk import word_tokenize
 
 # Read in the test and train files
 
-train = pandas.read_csv("small_train.csv")
-#train = pandas.read_csv("train.csv")
+#train = pandas.read_csv("small_train.csv")
+train = pandas.read_csv("train.csv")
 #test = pandas.read_csv("test.csv")
 
 # Use a smaller dataframe for testing code
@@ -37,8 +37,35 @@ train['length'] = train.apply(lambda x: len(x['comment_text_tokenized']), axis=1
 def lexical_diversity(text):
 	return len(set(text))/len(text)
 
-# create lexical diversity column
+# Create lexical diversity column
 train['lexical_diversity'] = train.apply(lambda x: lexical_diversity(x['comment_text_tokenized']), axis=1)
+
+# Lists of potentially relevant words
+vulgarities = ['cock','dick','cunt','ass','shit','fuck','bitch']
+slurs = [' fag',' nigg','slut']
+insults = ['stupid','moron']
+identities = ['jew','mexican','gay','homosexual']
+violence = ['murder','stab','shoot','kill','die','rape']
+frequent_long_words = ['nigger', 'faggot', 'stupid', 'yourself','fuck','going','fat','jew','suck','die','ass','kill','shit','consensus','adding','check','cock','spanish','wales','murder']
+
+def contains_one(s,lst):
+	for w in lst:
+		if re.search(w,s,re.IGNORECASE):
+			return 1
+	return 0
+
+train['contains_vulgarity'] = train.apply(lambda x: contains_one(x['comment_text'], vulgarities), axis=1)
+
+train['contains_slur'] = train.apply(lambda x: contains_one(x['comment_text'], slurs), axis=1)
+
+train['contains_insult'] = train.apply(lambda x: contains_one(x['comment_text'], insults), axis=1)
+
+train['contains_identity'] = train.apply(lambda x: contains_one(x['comment_text'], identities), axis=1)
+
+train['contains_violence'] = train.apply(lambda x: contains_one(x['comment_text'], violence), axis=1)
+
+for w in frequent_long_words:
+	train['fw_'+w] = train.apply(lambda x: contains_one(x['comment_text'], [w]), axis=1)
 
 
 # Now look at which features differentiate between categories
@@ -54,54 +81,67 @@ df_dict['vanilla'] = train.query('toxic==0 and severe_toxic==0 and obscene==0 an
 for label in labels[1:-1]:
 	df_dict[label] = train.query(label + '==1')
 
+# Store averages of features for each category
+feature_columns = train.columns[9:]
+summary_df = pandas.DataFrame(columns = feature_columns, index = labels)
+
 # Concat the individual comments in each category to a large text whose statistics can be analyzed
 subtexts = {}
+# lower case version of the above
+subtexts_lower = {}
 # County the number of comments in each category
 counts = {}
-# Whithin each category, find the mean of linguistic_diversity
-mean_diversity = {}
-# Within each category, find the mean length of comments
-mean_length = {}
 # For each category, get the frequency distribution
 frequency_distributions = {}
 # Convert frequencies from absolute counts to fractions of occurences. Not yet implemented
 frac_freq = {}
 # Frequency distribution over words over some minimum length (currently 4)
 big_word_freq = {}
+# Frequency distribution over words not common in the total set
+freq2 = {}
+# Frequency distribution over words not common in the 'toxic' set
+freq3 = {}
 
 # Fill out the above dictionaries
 for label in labels:
+
 	df = df_dict[label]
-	mean_diversity[label] = df['lexical_diversity'].mean()
-	mean_length[label] = df['length'].mean()
+
 	counts[label] = 0
 	subtexts[label] = []
+	subtexts_lower[label] = []
 	for index, row in df.iterrows():
 		subtexts[label] += row['comment_text_tokenized']
+		subtexts_lower[label] += [w.lower() for w in row['comment_text_tokenized']]
 		counts[label] += 1
-	frequency_distributions[label] = nltk.FreqDist(subtexts[label])
-	big_word_text = [w for w in subtexts[label] if len(w)>4]
+	frequency_distributions[label] = nltk.FreqDist(subtexts_lower[label])
+	big_word_text = [w for w in subtexts_lower[label] if len(w)>4]
 	big_word_freq[label] = nltk.FreqDist(big_word_text)
-	
 
-print
+	summary_df.loc[label,'counts'] = counts[label]
+	for c in feature_columns:
+		summary_df.loc[label,c] = df[c].mean()
 
-print mean_length
-
-print 
-
-print mean_diversity
-
-print
-
-print counts
+purge_list = [tp[0] for tp in frequency_distributions['total'].most_common(300)]
+purge_list2 = [tp[0] for tp in frequency_distributions['toxic'].most_common(300)]
+for label in labels:
+	text2 = [w for w in subtexts_lower[label] if not w in purge_list]
+	freq2[label] = nltk.FreqDist(text2)
+	text3 = [w for w in subtexts_lower[label] if not w in purge_list2]
+	freq3[label] = nltk.FreqDist(text3)
 
 print
 
 for label in labels:
+	df = df_dict[label]
 	print label
-	print big_word_freq[label].most_common(12)
+	print df['toxic'].mean()
+	print freq3[label].most_common(10)
 	print
+
+# Save summary_df
+
+summary_df.to_csv("summary.csv")
 
 # Save modified csv
 train.to_csv("train_dec.csv")
