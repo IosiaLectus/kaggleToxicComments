@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 # Use the sklearn and nltk to classify toxic comments.
 
@@ -8,6 +8,7 @@ import pandas, nltk, re
 import numpy as np
 import csv as csv
 
+from matplotlib import pyplot
 from nltk import word_tokenize
 from sklearn.ensemble import RandomForestClassifier
 from copy import deepcopy
@@ -37,7 +38,7 @@ frequent_long_words = ['nigger', 'faggot', 'stupid', 'yourself','fuck','going','
 def decorate(trn):
 
 	# Tokenize comments
-	trn['comment_text_tokenized'] = trn.apply(lambda x: word_tokenize(x['comment_text']), axis=1)
+	trn['comment_text_tokenized'] = trn.apply(lambda x: word_tokenize(x['comment_text'].decode('utf-8')), axis=1)
 
 	# Create comment length column
 	trn['length'] = trn.apply(lambda x: len(x['comment_text_tokenized']), axis=1)
@@ -127,14 +128,14 @@ def check_features(trn):
 		text3 = [w for w in subtexts_lower[label] if not w in purge_list2]
 		freq3[label] = nltk.FreqDist(text3)
 
-	print()
+	print
 
 	for label in labels:
 		df = df_dict[label]
-		print(label)
-		print(df['toxic'].mean())
-		print(freq3[label].most_common(10))
-		print()
+		print label
+		print df['toxic'].mean()
+		print freq3[label].most_common(10)
+		print
 
 	# Save summary_df
 
@@ -161,19 +162,19 @@ def main():
 
 	# Create prediction df
 	predict = pandas.DataFrame(columns = labels, index = test['id'])
-	print()
-	print('predict created')
+	print
+	print 'predict created'
 
 	# Traning targets
 	target_lst = [train[label] for label in labels]
 
 	# Define features
 	decorate(train)
-	print()
-	print('train decorated')
+	print
+	print 'train decorated'
 	decorate(test)
 	print
-	print('test decorated')
+	print 'test decorated'
 
 	## Save modified csv
 	train.to_csv("train_dec.csv")
@@ -190,14 +191,14 @@ def main():
 	# train the classifiers
 	for i in range(0,len(labels)):
 		my_forest_lst[i].fit(train_features,target_lst[i])
-		print()
-		print("forest for " + labels[i] + " trained")
+		print
+		print ("forest for " + labels[i] + " trained")
 		predict[labels[i]] = my_forest_lst[i].predict_proba(test)[:,1]
-
-	print()
+	
+	print
 	predict.to_csv("prediction.csv")
-	print("prediction saved")
-	print()
+	print "prediction saved"
+	print
 
 
 if __name__ == '__main__':
