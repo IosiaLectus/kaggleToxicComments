@@ -1,0 +1,48 @@
+total
+[('article', 80), ('wikipedia', 66), ('about', 56), ('would', 50), ('should', 47), ('there', 47), ('please', 44), ('which', 41), ('other', 38), ('people', 34)]
+[('state', 8), ('sense', 8), ('notable', 8), ('template', 8), ('agree', 8), ('world', 8), ('tag', 8), ('materials', 8), ('always', 8), ('subject', 8)]
+[(':', 123), (')', 117), ('(', 106), ('by', 69), ('would', 50), ('we', 47), ('there', 47), ('will', 45), ('please', 44), ('also', 42)]
+[(("''", "''"), 153), (('``', "''"), 113), (('.', 'i'), 100), (('of', 'the'), 82), ((',', 'and'), 71), (('in', 'the'), 64), (('do', "n't"), 48), (('.', 'the'), 48), (('if', 'you'), 47), ((',', 'but'), 44)]
+
+toxic
+[('should', 6), ('about', 6), ('think', 5), ('because', 5), ('stupid', 4), ('sorry', 4), ('edits', 4), ('wikipedia', 4), ('article', 4), ('fucked', 3)]
+[('fuck', 7), ('stupid', 4), ('gay', 4), ('fucked', 3), ('fucking', 3), ('cant', 3), ('asshole', 3), ('burn', 3), ('dick', 3), ('down', 3)]
+[("'i", 2), ('wo', 2), ('would', 2), ('nazi', 2), ('ca', 2), ('deleting', 2), ('maybe', 2), ('said', 2), ('again', 2), ('eat', 2)]
+[(('!', '!'), 11), (('.', 'you'), 8), (('.', 'i'), 7), (('do', "n't"), 5), (('you', 'are'), 5), (('i', "'m"), 5), (('is', 'a'), 4), (('for', 'a'), 4), ((',', 'you'), 4), (('to', 'do'), 4)]
+
+severe_toxic
+[('stupid', 2), ('stuff', 1), ('before', 1), ('asshole', 1), ('mother', 1), ('cocksucker', 1), ('stinks', 1), ('deleting', 1), ('around', 1), ('peace', 1)]
+[('stupid', 2), ('hell', 1), ('mother', 1), ('fall', 1), ('shit', 1), ('peace', 1), ('piss', 1), ('fuck', 1), ('stuff', 1), ('die', 1)]
+[('fall', 1), ('shit', 1), ('peace', 1), ('piss', 1), ('stuff', 1), ('before', 1), ('cocksucker', 1), ('stinks', 1), ('cunt', 1), ('deleting', 1)]
+[(('work', 'stupid'), 1), (('stupid', 'fuck'), 1), (('of', 'shit'), 1), (('shit', 'stop'), 1), (('and', 'your'), 1), (('hell', '!'), 1), (('a', 'hole'), 1), (('!', 'you'), 1), (('stupid', 'peace'), 1), (('on', 'my'), 1)]
+
+obscene
+[('because', 4), ('fucked', 3), ('history', 3), ('fucking', 3), ('stupid', 3), ('edits', 3), ('about', 3), ('think', 3), ('asshole', 3), ('mother', 3)]
+[('fuck', 7), ('gay', 4), ('stupid', 3), ('fucked', 3), ('fucking', 3), ('asshole', 3), ('mother', 3), ('burn', 3), ('dick', 2), ('hell', 2)]
+[('wo', 2), ('nazi', 2), ('deleting', 2), ('maybe', 2), ('eat', 2), ("'i", 2), ('bald', 2), ('revert', 2), ('ass', 2), ('other', 2)]
+[(('.', 'you'), 7), (('you', 'are'), 5), (('.', 'i'), 5), (('!', '!'), 4), (('...', '...'), 3), (('fucked', 'up'), 3), (('is', 'a'), 3), (('for', 'a'), 3), (('up', '.'), 3), ((',', 'that'), 3)]
+
+threat
+[('think', 1), ('again', 1), ('conndoms', 1), ('sorry', 1), ('warning', 1), ('running', 1), ('undoing', 1), ('fagget', 1), ('edits', 1)]
+[('oife', 1), ('hate', 1), ('burn', 1), ('undoing', 1), ('fagget', 1), ('running', 1), ('hell', 1), ('sex', 1), ('die', 1), ('warning', 1)]
+[('again', 1), ('oife', 1), ('hi', 1), ('out', 1), ('conndoms', 1), ('hate', 1), ('undoing', 1), ('fagget', 1), ('running', 1), ('we', 1)]
+[(('!', 'i'), 2), (('again', '!'), 1), (('oife', 'and'), 1), (('out', 'of'), 1), (('hate', 'you'), 1), (('!', 'last'), 1), (('a', 'oife'), 1), (('warning', '!'), 1), (('hi', '!'), 1), (('of', 'conndoms'), 1)]
+
+insult
+[('stupid', 4), ('people', 4), ('think', 4), ('edits', 3), ('vietnam', 3), ('should', 2), ('write', 2), ('because', 2), ('wikipedia', 2), ('world', 2)]
+[('fuck', 4), ('stupid', 4), ('gay', 4), ('burn', 3), ('vietnam', 3), ('crap', 2), ('world', 2), ('sea', 2), ('hell', 2), ('wo', 2)]
+[('part', 4), ('vietnam', 3), ('world', 2), ('sea', 2), ('wo', 2), ('would', 2), ('we', 2), ('nazi', 2), ('shit', 2), ('chinese', 2)]
+[(('part', 'of'), 4), ((',', 'you'), 4), (('!', '!'), 4), ((',', 'that'), 3), (('you', "'re"), 3), ((',', 'and'), 3), (('go', 'to'), 3), (('you', 'are'), 3), (('.', 'i'), 2), (('i', 'think'), 2)]
+
+identity_hate
+[('erased', 1), ('shwain', 1), ('tiger', 1), ('sometimes', 1), ('sorry', 1), ('greetingshhh', 1), ('holocaust', 1), ('boy.u', 1), ('words', 1), ('pentagram', 1)]
+[('gay', 4), ('r', 2), ('nazi', 2), ('u', 2), ('erased', 1), ('kill', 1), ('fuck', 1), ('shwain', 1), ('tw', 1), ('tiger', 1)]
+[('nazi', 2), ('erased', 1), ('kill', 1), ('shwain', 1), ('tw', 1), ('tiger', 1), ('this..', 1), ('hard', 1), ('sometimes', 1), ('side', 1)]
+[((',', 'that'), 3), (('.', 'i'), 2), (('go', 'to'), 2), (('any', 'more'), 2), (('you', 'are'), 2), (('to', 'the'), 2), (('of', 'the'), 2), (('if', 'you'), 2), (('-', 'if'), 2), (('.', 'u'), 1)]
+
+vanilla
+[('article', 76), ('wikipedia', 61), ('about', 50), ('would', 48), ('there', 46), ('please', 44), ('should', 41), ('which', 40), ('other', 36), ('information', 30)]
+[('state', 8), ('sense', 8), ('notable', 8), ('template', 8), ('agree', 8), ('tag', 8), ('materials', 8), ('subject', 8), ('review', 8), ('available', 8)]
+[(':', 122), (')', 115), ('(', 104), ('by', 67), ('would', 48), ('there', 46), ('we', 45), ('please', 44), ('will', 43), ('also', 41)]
+[(("''", "''"), 151), (('``', "''"), 111), (('.', 'i'), 93), (('of', 'the'), 79), ((',', 'and'), 68), (('in', 'the'), 62), (('.', 'the'), 47), (('if', 'you'), 45), ((',', 'but'), 43), (('do', "n't"), 43)]
+
