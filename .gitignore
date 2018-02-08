@@ -1,2 +1,4 @@
-*.csv
+trai*.csv
+tes*.csv
+predic*.csv
 *.csv#

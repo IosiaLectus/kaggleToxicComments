@@ -29,6 +29,10 @@ def contains_one(s,lst):
 			return 1
 	return 0
 
+def list_count(item,lst):
+	tally = [1 for x in lst if x==item]
+	return len(tally)
+
 # Lists of potentially relevant words
 vulgarities = ['cock','dick','cunt','ass','shit','fuck','bitch','piss']
 slurs = [' fag',' nigg','slut']
@@ -44,19 +48,22 @@ def decorate(trn):
 	trn['comment_text_tokenized'] = trn.apply(lambda x: word_tokenize(x['comment_text']), axis=1)
 
 	# Tag words
-	trn['comment_text_tags'] = trn.apply(lambda x: nltk.pos_tag(x['comment_text_tokenized']), axis=1)
-
-	# Tag frequency
-	trn['tag_frequency'] = trn.apply(lambda x: nltk.FreqDist(['comment_text_tags']), axis=1)
+	trn['comment_text_tags'] = trn.apply(lambda x: [tpl[1] for tpl in nltk.pos_tag(x['comment_text_tokenized'])], axis=1)
 
 	# Noun frequency
-	trn['noun_freq'] = trn.apply(lambda x: mydiv(x['tag_frequency']['NN'],len(x['comment_text_tokenized'])), axis=1)
+	trn['noun_freq'] = trn.apply(lambda x: mydiv((list_count('NN',x['comment_text_tags']) + list_count('NNP',x['comment_text_tags'])),len(x['comment_text_tokenized'])), axis=1)
 
 	# Adjective frequency
-	trn['adjective_freq'] = trn.apply(lambda x: mydiv(x['tag_frequency']['JJ'],len(x['comment_text_tokenized'])), axis=1)
+	trn['adjective_freq'] = trn.apply(lambda x: mydiv(list_count('JJ',x['comment_text_tags']),len(x['comment_text_tokenized'])), axis=1)
 
 	# Verb frequency
-	trn['verb_freq'] = trn.apply(lambda x: mydiv(x['tag_frequency']['VB'],len(x['comment_text_tokenized'])), axis=1)
+	trn['verb_freq'] = trn.apply(lambda x: mydiv((list_count('VB',x['comment_text_tags']) + list_count('VBP',x['comment_text_tags'])),len(x['comment_text_tokenized'])), axis=1)
+
+	# Adjective frequency
+	trn['punct_freq'] = trn.apply(lambda x: mydiv(list_count('.',x['comment_text_tags']),len(x['comment_text_tokenized'])), axis=1)
+
+	# Adjective frequency
+	trn['personal_pronoun_freq'] = trn.apply(lambda x: mydiv(list_count('PRP$',x['comment_text_tags']),len(x['comment_text_tokenized'])), axis=1)
 
 	# Create comment length column
 	trn['length'] = trn.apply(lambda x: len(x['comment_text_tokenized']), axis=1)
@@ -190,19 +197,16 @@ def main():
 
 	# Create prediction df
 	predict = pandas.DataFrame(columns = labels, index = test['id'])
-	print()
-	print('predict created')
+	print('\npredict created')
 
 	# Traning targets
 	target_lst = [train[label] for label in labels]
 
 	# Define features
 	decorate(train)
-	print()
-	print('train decorated')
+	print('\ntrain decorated')
 	decorate(test)
-	print()
-	print('test decorated')
+	print('\ntest decorated')
 
 	## Save modified csv
 	train.to_csv("train_dec.csv")
@@ -211,8 +215,13 @@ def main():
 	#check_features(train)
 
 	# Drop columns not used in training
-	train_features = train.drop(['comment_text','comment_text_tokenized','comment_text_tags','tag_frequency','toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate','id'],axis=1)
-	test = test.drop(['comment_text','comment_text_tokenized','comment_text_tags','tag_frequency','id'],axis=1)
+	train = train.drop(['comment_text','comment_text_tokenized','comment_text_tags','id'],axis=1)
+	test = test.drop(['comment_text','comment_text_tokenized','comment_text_tags','id'],axis=1)
+	train_features = train.drop(['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate'],axis=1)
+
+	# Create correlation matrix
+	train.corr().to_csv("correlations.csv")
+	print("\nSaved correlation table")
 
 	# Create random forest
 	my_forest_lst = [RandomForestClassifier(n_estimators=100) for label in labels]
@@ -229,16 +238,14 @@ def main():
 		importance_str += (labels[i] + ": " +str(my_forest_lst[i].feature_importances_) + "\n\n")
 		predict[labels[i]] = my_forest_lst[i].predict_proba(test)[:,1]
 
-	print()
 	predict.to_csv("prediction.csv")
-	print("prediction saved")
-	print()
-	print(importance_str)
+	print("\nprediction saved")
 
 	f = open("important_features.txt",'w')
 	f.write(importance_str)
 	f.close()
 
+	print("\nDone\n")
 
 
 if __name__ == '__main__':
