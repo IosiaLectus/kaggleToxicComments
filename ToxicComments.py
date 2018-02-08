@@ -10,13 +10,17 @@ import csv as csv
 
 from nltk import word_tokenize
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from copy import deepcopy
+
+def mydiv(x,y):
+	if y==0:
+		return 0
+	return x/y
 
 # Define a lexical diveristy function
 def lexical_diversity(text):
-	if len(text) == 0:
-		return 0
-	return len(set(text))/len(text)
+	return mydiv(len(set(text)),len(text))
 
 
 def contains_one(s,lst):
@@ -31,7 +35,7 @@ slurs = [' fag',' nigg','slut']
 insults = ['stupid','moron']
 identities = ['jew','mexican','gay','homosexual','vietnam','chinese']
 violence = ['murder','stab','shoot','kill','die','rape']
-frequent_long_words = ['nigger', 'faggot', 'stupid', 'yourself','fuck','going','fat','jew','suck','die','ass','kill','shit','consensus','adding','check','cock','spanish','wales','murder']
+frequent_long_words = ['nigger', 'faggot', 'stupid', 'yourself','fuck','going','fat','jew','suck','die','ass','kill','shit','consensus','adding','check','cock','spanish','wales','murder','mother','sex', 'I will','!', 'is a','!!','fat jew','huge faggot', 'nigger nigger', 'fuck you', 'die die']
 
 # Create a set of possibly relevant features
 def decorate(trn):
@@ -39,8 +43,26 @@ def decorate(trn):
 	# Tokenize comments
 	trn['comment_text_tokenized'] = trn.apply(lambda x: word_tokenize(x['comment_text']), axis=1)
 
+	# Tag words
+	trn['comment_text_tags'] = trn.apply(lambda x: nltk.pos_tag(x['comment_text_tokenized']), axis=1)
+
+	# Tag frequency
+	trn['tag_frequency'] = trn.apply(lambda x: nltk.FreqDist(['comment_text_tags']), axis=1)
+
+	# Noun frequency
+	trn['noun_freq'] = trn.apply(lambda x: mydiv(x['tag_frequency']['NN'],len(x['comment_text_tokenized'])), axis=1)
+
+	# Adjective frequency
+	trn['adjective_freq'] = trn.apply(lambda x: mydiv(x['tag_frequency']['JJ'],len(x['comment_text_tokenized'])), axis=1)
+
+	# Verb frequency
+	trn['verb_freq'] = trn.apply(lambda x: mydiv(x['tag_frequency']['VB'],len(x['comment_text_tokenized'])), axis=1)
+
 	# Create comment length column
 	trn['length'] = trn.apply(lambda x: len(x['comment_text_tokenized']), axis=1)
+
+	# Create comment length column
+	trn['avg_word_length'] = trn.apply(lambda x: mydiv(len(x['comment_text']),len(x['comment_text_tokenized'])), axis=1)
 
 	# Create lexical diversity column
 	trn['lexical_diversity'] = trn.apply(lambda x: lexical_diversity(x['comment_text_tokenized']), axis=1)
@@ -100,6 +122,8 @@ def check_features(trn):
 	freq3 = {}
 	# Bigram frequencies
 	bigrams = {}
+	# Bigram frequencies
+	bigrams2 = {}
 
 	# Fill out the above dictionaries
 	for label in labels:
@@ -116,8 +140,8 @@ def check_features(trn):
 			counts[label] += 1
 		frequency_distributions[label] = nltk.FreqDist(subtexts_lower[label])
 		big_word_text = [w for w in subtexts_lower[label] if len(w)>4]
-		big_word_freq[label] = nltk.FreqDist(big_word_text)
-		bigrams[label] = nltk.FreqDist(nltk.bigrams(subtexts_lower[label]))
+		big_word_freq[label] = nltk.FreqDist(big_word_text).most_common(10)
+		bigrams[label] = nltk.FreqDist(nltk.bigrams(subtexts_lower[label])).most_common(100)
 
 		summary_df.loc[label,'counts'] = counts[label]
 		for c in feature_columns:
@@ -125,11 +149,14 @@ def check_features(trn):
 
 	purge_list = [tp[0] for tp in frequency_distributions['total'].most_common(300)]
 	purge_list2 = [tp[0] for tp in frequency_distributions['toxic'].most_common(150)]
+	purge_list3 = [tp[0] for tp in bigrams['total']]
 	for label in labels:
 		text2 = [w for w in subtexts_lower[label] if not w in purge_list]
-		freq2[label] = nltk.FreqDist(text2)
+		freq2[label] = nltk.FreqDist(text2).most_common(10)
 		text3 = [w for w in subtexts_lower[label] if not w in purge_list2]
-		freq3[label] = nltk.FreqDist(text3)
+		freq3[label] = nltk.FreqDist(text3).most_common(10)
+		bigram_list = [bg for bg in nltk.bigrams(subtexts[label]) if not bg in bigrams[label]]
+		bigrams2[label] = nltk.FreqDist(bigram_list).most_common(10)
 
 	# Save summary_df
 
@@ -141,7 +168,7 @@ def check_features(trn):
 	f = open("important_words.txt",'w')
 	f_str = ''
 	for label in labels:
-		f_str += label + "\n" + str(big_word_freq[label].most_common(10)) + "\n" + str(freq2[label].most_common(10)) + "\n" + str(freq3[label].most_common(10)) + "\n" + str(bigrams[label].most_common(10)) + "\n\n"
+		f_str += label + "\n" + str(big_word_freq[label]) + "\n" + str(freq2[label]) + "\n" + str(freq3[label]) + "\n" + str(bigrams2[label]) + "\n\n"
 	f.write(f_str)
 	f.close()
 
@@ -150,7 +177,7 @@ def main():
 
 	#train = pandas.read_csv("small_train.csv")
 	train = pandas.read_csv("train.csv")
-	#test = pandas.read_csv("test.csv")
+	test = pandas.read_csv("test.csv")
 
 	# Use a smaller dataframe for testing code
 	#small_train = train.head(250)
@@ -162,9 +189,9 @@ def main():
 	labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 
 	# Create prediction df
-	#predict = pandas.DataFrame(columns = labels, index = test['id'])
-	#print()
-	#print('predict created')
+	predict = pandas.DataFrame(columns = labels, index = test['id'])
+	print()
+	print('predict created')
 
 	# Traning targets
 	target_lst = [train[label] for label in labels]
@@ -173,38 +200,45 @@ def main():
 	decorate(train)
 	print()
 	print('train decorated')
-	#decorate(test)
-	#print()
-	#print('test decorated')
+	decorate(test)
+	print()
+	print('test decorated')
 
 	## Save modified csv
 	train.to_csv("train_dec.csv")
 
 	# Check the efficacy of the features
-	check_features(train)
+	#check_features(train)
 
 	# Drop columns not used in training
-	#train_features = train.drop(['comment_text','comment_text_tokenized','toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate','id'],axis=1)
-	#test = test.drop(['comment_text','comment_text_tokenized','id'],axis=1)
+	train_features = train.drop(['comment_text','comment_text_tokenized','comment_text_tags','tag_frequency','toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate','id'],axis=1)
+	test = test.drop(['comment_text','comment_text_tokenized','comment_text_tags','tag_frequency','id'],axis=1)
 
 	# Create random forest
 	my_forest_lst = [RandomForestClassifier(n_estimators=100) for label in labels]
 
 	labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+
+	importance_str = ''
 	
-	'''
 	# train the classifiers
 	for i in range(0,len(labels)):
 		my_forest_lst[i].fit(train_features,target_lst[i])
 		print()
 		print("forest for " + labels[i] + " trained")
+		importance_str += (labels[i] + ": " +str(my_forest_lst[i].feature_importances_) + "\n\n")
 		predict[labels[i]] = my_forest_lst[i].predict_proba(test)[:,1]
 
 	print()
 	predict.to_csv("prediction.csv")
 	print("prediction saved")
-	'''
 	print()
+	print(importance_str)
+
+	f = open("important_features.txt",'w')
+	f.write(importance_str)
+	f.close()
+
 
 
 if __name__ == '__main__':

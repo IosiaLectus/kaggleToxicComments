@@ -1,48 +1,48 @@
 total
-[('article', 80), ('wikipedia', 66), ('about', 56), ('would', 50), ('should', 47), ('there', 47), ('please', 44), ('which', 41), ('other', 38), ('people', 34)]
-[('state', 8), ('sense', 8), ('notable', 8), ('template', 8), ('agree', 8), ('world', 8), ('tag', 8), ('materials', 8), ('always', 8), ('subject', 8)]
-[(':', 123), (')', 117), ('(', 106), ('by', 69), ('would', 50), ('we', 47), ('there', 47), ('will', 45), ('please', 44), ('also', 42)]
-[(("''", "''"), 153), (('``', "''"), 113), (('.', 'i'), 100), (('of', 'the'), 82), ((',', 'and'), 71), (('in', 'the'), 64), (('do', "n't"), 48), (('.', 'the'), 48), (('if', 'you'), 47), ((',', 'but'), 44)]
+[('article', 56859), ('wikipedia', 45418), ('about', 37043), ('there', 35074), ('would', 30798), ('please', 29607), ('which', 25320), ('should', 25173), ('other', 22395), ('think', 20037)]
+[('english', 4228), ('probably', 4226), ('else', 4223), ('original', 4215), ('every', 4195), ('ip', 4174), ('simply', 4172), ('word', 4167), ('hello', 4120), ('site', 4109)]
+[('which', 25320), (';', 21899), ('also', 20574), ('articles', 16424), ('use', 16330), ('were', 15794), ('may', 15557), ('thanks', 13548), ('could', 12792), ('had', 12787)]
+[(("''", "''"), 80750), (('``', "''"), 64458), (('.', 'I'), 57664), (('!', '!'), 55324), (('of', 'the'), 49410), ((',', 'and'), 45984), (('in', 'the'), 35208), ((',', 'I'), 31038), ((',', 'but'), 28715), (('to', 'the'), 26052)]
 
 toxic
-[('should', 6), ('about', 6), ('think', 5), ('because', 5), ('stupid', 4), ('sorry', 4), ('edits', 4), ('wikipedia', 4), ('article', 4), ('fucked', 3)]
-[('fuck', 7), ('stupid', 4), ('gay', 4), ('fucked', 3), ('fucking', 3), ('cant', 3), ('asshole', 3), ('burn', 3), ('dick', 3), ('down', 3)]
-[("'i", 2), ('wo', 2), ('would', 2), ('nazi', 2), ('ca', 2), ('deleting', 2), ('maybe', 2), ('said', 2), ('again', 2), ('eat', 2)]
-[(('!', '!'), 11), (('.', 'you'), 8), (('.', 'i'), 7), (('do', "n't"), 5), (('you', 'are'), 5), (('i', "'m"), 5), (('is', 'a'), 4), (('for', 'a'), 4), ((',', 'you'), 4), (('to', 'do'), 4)]
+[('wikipedia', 3383), ('nigger', 3290), ('fucking', 3186), ('about', 2268), ('faggot', 2008), ('yourself', 1938), ('people', 1862), ('moron', 1854), ('because', 1846), ('bitch', 1765)]
+[('shit', 3576), ('nigger', 3290), ('suck', 3225), ('fucking', 3186), ('ass', 2882), ('u', 2623), ('hate', 2612), ('gay', 2218), ('die', 2081), ('faggot', 2008)]
+[('really', 816), ('which', 812), ('bad', 799), ('hey', 796), ('kill', 794), ('aids', 783), ('hell', 779), ('good', 778), ('eat', 772), ('ca', 759)]
+[(('!', '!'), 38379), (('.', 'I'), 4351), (("''", "''"), 3622), (('``', "''"), 3050), (('.', 'You'), 2507), (('is', 'a'), 2490), ((',', 'I'), 2400), ((',', 'you'), 2127), ((',', 'and'), 2068), (('do', "n't"), 1915)]
 
 severe_toxic
-[('stupid', 2), ('stuff', 1), ('before', 1), ('asshole', 1), ('mother', 1), ('cocksucker', 1), ('stinks', 1), ('deleting', 1), ('around', 1), ('peace', 1)]
-[('stupid', 2), ('hell', 1), ('mother', 1), ('fall', 1), ('shit', 1), ('peace', 1), ('piss', 1), ('fuck', 1), ('stuff', 1), ('die', 1)]
-[('fall', 1), ('shit', 1), ('peace', 1), ('piss', 1), ('stuff', 1), ('before', 1), ('cocksucker', 1), ('stinks', 1), ('cunt', 1), ('deleting', 1)]
-[(('work', 'stupid'), 1), (('stupid', 'fuck'), 1), (('of', 'shit'), 1), (('shit', 'stop'), 1), (('and', 'your'), 1), (('hell', '!'), 1), (('a', 'hole'), 1), (('!', 'you'), 1), (('stupid', 'peace'), 1), (('on', 'my'), 1)]
+[('faggot', 1569), ('fucking', 1373), ('yourself', 1239), ('bitch', 1110), ('nigger', 1011), ('sucks', 961), ('wikipedia', 692), ('fucksex', 624), ('yourselfgo', 621), ('fucker', 586)]
+[('suck', 2532), ('ass', 2105), ('shit', 1877), ('faggot', 1569), ('u', 1424), ('fucking', 1373), ('die', 1156), ('bitch', 1110), ('nigger', 1011), ('sucks', 961)]
+[('fucksex', 624), ('yourselfgo', 621), ('fucker', 586), ('kill', 580), ('cocksucker', 510), ('mothjer', 489), ('bastard', 480), ('eat', 431), ('huge', 424), ('shut', 407)]
+[(('!', '!'), 18541), (('FUCK', 'YOU'), 1430), (('.', 'I'), 1105), (('!', 'FUCK'), 1064), (('SHIT', 'SHIT'), 999), (('YOU', 'SUCK'), 975), (('fuck', 'yourself'), 880), (('Go', 'fuck'), 864), (('!', 'Go'), 830), (('yourself', '!'), 825)]
 
 obscene
-[('because', 4), ('fucked', 3), ('history', 3), ('fucking', 3), ('stupid', 3), ('edits', 3), ('about', 3), ('think', 3), ('asshole', 3), ('mother', 3)]
-[('fuck', 7), ('gay', 4), ('stupid', 3), ('fucked', 3), ('fucking', 3), ('asshole', 3), ('mother', 3), ('burn', 3), ('dick', 2), ('hell', 2)]
-[('wo', 2), ('nazi', 2), ('deleting', 2), ('maybe', 2), ('eat', 2), ("'i", 2), ('bald', 2), ('revert', 2), ('ass', 2), ('other', 2)]
-[(('.', 'you'), 7), (('you', 'are'), 5), (('.', 'i'), 5), (('!', '!'), 4), (('...', '...'), 3), (('fucked', 'up'), 3), (('is', 'a'), 3), (('for', 'a'), 3), (('up', '.'), 3), ((',', 'that'), 3)]
+[('fucking', 3091), ('nigger', 2720), ('bitch', 1772), ('wikipedia', 1689), ('yourself', 1448), ('faggot', 1215), ('about', 1143), ('bullshit', 1081), ('sucks', 1067), ('asshole', 994)]
+[('shit', 3179), ('fucking', 3091), ('suck', 3012), ('ass', 2798), ('nigger', 2720), ('u', 2093), ('bitch', 1772), ('cunt', 1510), ('fat', 1280), ('faggot', 1215)]
+[('fucker', 718), ('dickhead', 707), ('bastard', 685), ('eat', 683), ('faggots', 669), ('fucksex', 624), ('yourselfgo', 621), ('freedom', 601), ('damn', 596), ('shut', 589)]
+[(('!', '!'), 16427), (('.', 'I'), 2513), (('NIGGER', 'NIGGER'), 1882), (("''", "''"), 1778), (('FUCK', 'YOU'), 1571), (('is', 'a'), 1471), (('``', "''"), 1416), ((',', 'I'), 1309), (('.', 'You'), 1264), ((',', 'you'), 1208)]
 
 threat
-[('think', 1), ('again', 1), ('conndoms', 1), ('sorry', 1), ('warning', 1), ('running', 1), ('undoing', 1), ('fagget', 1), ('edits', 1)]
-[('oife', 1), ('hate', 1), ('burn', 1), ('undoing', 1), ('fagget', 1), ('running', 1), ('hell', 1), ('sex', 1), ('die', 1), ('warning', 1)]
-[('again', 1), ('oife', 1), ('hi', 1), ('out', 1), ('conndoms', 1), ('hate', 1), ('undoing', 1), ('fagget', 1), ('running', 1), ('we', 1)]
-[(('!', 'i'), 2), (('again', '!'), 1), (('oife', 'and'), 1), (('out', 'of'), 1), (('hate', 'you'), 1), (('!', 'last'), 1), (('a', 'oife'), 1), (('warning', '!'), 1), (('hi', '!'), 1), (('of', 'conndoms'), 1)]
+[('going', 294), ('yourself', 193), ('block', 170), ('wales', 157), ('supertr0ll', 151), ('fucking', 136), ('wikipedia', 128), ('murder', 107), ('fuckin', 101), ('blank', 94)]
+[('die', 1167), ('ass', 769), ('kill', 504), ('jim', 158), ('wales', 157), ('supertr0ll', 151), ('fucking', 136), ('ban', 132), ('murder', 107), ('fuckin', 101)]
+[('kill', 504), ('must', 167), ('jim', 158), ('wales', 157), ('supertr0ll', 151), ('ban', 132), ('murder', 107), ('fuckin', 101), ('live', 101), ('rvv', 96)]
+[(('!', '!'), 7111), (('.', 'I'), 1019), (('ass', '.'), 688), (('I', 'ass'), 677), (('DIE', 'DIE'), 630), (('I', 'WILL'), 497), ((',', 'I'), 348), (('going', 'to'), 272), (('I', 'am'), 246), (('you', '.'), 231)]
 
 insult
-[('stupid', 4), ('people', 4), ('think', 4), ('edits', 3), ('vietnam', 3), ('should', 2), ('write', 2), ('because', 2), ('wikipedia', 2), ('world', 2)]
-[('fuck', 4), ('stupid', 4), ('gay', 4), ('burn', 3), ('vietnam', 3), ('crap', 2), ('world', 2), ('sea', 2), ('hell', 2), ('wo', 2)]
-[('part', 4), ('vietnam', 3), ('world', 2), ('sea', 2), ('wo', 2), ('would', 2), ('we', 2), ('nazi', 2), ('shit', 2), ('chinese', 2)]
-[(('part', 'of'), 4), ((',', 'you'), 4), (('!', '!'), 4), ((',', 'that'), 3), (('you', "'re"), 3), ((',', 'and'), 3), (('go', 'to'), 3), (('you', 'are'), 3), (('.', 'i'), 2), (('i', 'think'), 2)]
+[('nigger', 2773), ('fucking', 2707), ('faggot', 1859), ('bitch', 1714), ('moron', 1454), ('yourself', 1318), ('wikipedia', 1288), ('stupid', 1059), ('about', 968), ('sucks', 953)]
+[('suck', 2786), ('nigger', 2773), ('fucking', 2707), ('ass', 2167), ('u', 2000), ('fat', 1923), ('faggot', 1859), ('bitch', 1714), ('shit', 1661), ('moron', 1454)]
+[('dickhead', 703), ('fucker', 694), ('faggots', 664), ('bastard', 635), ('yourselfgo', 621), ('freedom', 603), ('cocksucker', 541), ('huge', 531), ('idiot', 530), ('hey', 529)]
+[(('!', '!'), 18144), (('.', 'I'), 2095), (('NIGGER', 'NIGGER'), 1701), (('is', 'a'), 1606), (('FUCK', 'YOU'), 1539), (('.', 'You'), 1431), (("''", "''"), 1353), (('moron', 'hi'), 1273), ((',', 'you'), 1271), (('hi', 'moron'), 1270)]
 
 identity_hate
-[('erased', 1), ('shwain', 1), ('tiger', 1), ('sometimes', 1), ('sorry', 1), ('greetingshhh', 1), ('holocaust', 1), ('boy.u', 1), ('words', 1), ('pentagram', 1)]
-[('gay', 4), ('r', 2), ('nazi', 2), ('u', 2), ('erased', 1), ('kill', 1), ('fuck', 1), ('shwain', 1), ('tw', 1), ('tiger', 1)]
-[('nazi', 2), ('erased', 1), ('kill', 1), ('shwain', 1), ('tw', 1), ('tiger', 1), ('this..', 1), ('hard', 1), ('sometimes', 1), ('side', 1)]
-[((',', 'that'), 3), (('.', 'i'), 2), (('go', 'to'), 2), (('any', 'more'), 2), (('you', 'are'), 2), (('to', 'the'), 2), (('of', 'the'), 2), (('if', 'you'), 2), (('-', 'if'), 2), (('.', 'u'), 1)]
+[('nigger', 2964), ('faggot', 739), ('fucking', 517), ('stupid', 396), ('mexicans', 365), ('bitch', 346), ('niggas', 342), ('bunksteve', 278), ('tommy2010', 227), ('yourself', 214)]
+[('nigger', 2964), ('fat', 1320), ('jew', 1307), ('gay', 910), ('die', 879), ('faggot', 739), ('fucking', 517), ('huge', 429), ('suck', 425), ('shit', 407)]
+[('huge', 429), ('mexicans', 365), ('niggas', 342), ('bunksteve', 278), ('tommy2010', 227), ('ancestryfuck-off-jewish', 207), ('down', 204), ('kill', 197), ('spanish', 181), ('licker', 181)]
+[(('NIGGER', 'NIGGER'), 1768), (('!', '!'), 1631), (('JEW', 'FAT'), 1234), (('FAT', 'JEW'), 1226), (('DIE', 'DIE'), 632), (('is', 'a'), 512), (('is', 'gay'), 449), (('FAGGOT', 'HUGE'), 416), (('HUGE', 'FAGGOT'), 416), (('!', 'I'), 382)]
 
 vanilla
-[('article', 76), ('wikipedia', 61), ('about', 50), ('would', 48), ('there', 46), ('please', 44), ('should', 41), ('which', 40), ('other', 36), ('information', 30)]
-[('state', 8), ('sense', 8), ('notable', 8), ('template', 8), ('agree', 8), ('tag', 8), ('materials', 8), ('subject', 8), ('review', 8), ('available', 8)]
-[(':', 122), (')', 115), ('(', 104), ('by', 67), ('would', 48), ('there', 46), ('we', 45), ('please', 44), ('will', 43), ('also', 41)]
-[(("''", "''"), 151), (('``', "''"), 111), (('.', 'i'), 93), (('of', 'the'), 79), ((',', 'and'), 68), (('in', 'the'), 62), (('.', 'the'), 47), (('if', 'you'), 45), ((',', 'but'), 43), (('do', "n't"), 43)]
+[('article', 55307), ('wikipedia', 41800), ('about', 34505), ('there', 33572), ('would', 29524), ('please', 28578), ('which', 24408), ('should', 23721), ('other', 21270), ('think', 18643)]
+[('original', 4115), ('english', 4029), ('simply', 3997), ('consensus', 3972), ('check', 3959), ('adding', 3954), ('probably', 3952), ('—', 3947), ('hello', 3918), ('state', 3913)]
+[('which', 24408), (';', 21166), ('also', 19744), ('articles', 15879), ('use', 15825), ('may', 15207), ('were', 14964), ('thanks', 13114), ('could', 12286), ('had', 12017)]
+[(("''", "''"), 76632), (('``', "''"), 60992), (('.', 'I'), 52956), (('of', 'the'), 47821), ((',', 'and'), 43617), (('in', 'the'), 33844), ((',', 'I'), 28416), ((',', 'but'), 27642), (('to', 'the'), 25179), (('.', 'The'), 22296)]
 
