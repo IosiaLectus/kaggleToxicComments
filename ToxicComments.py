@@ -3,7 +3,7 @@
 # Use the sklearn and nltk to classify toxic comments.
 
 # Import useful packages
-import pandas, nltk, re
+import pandas, nltk, re, math
 
 import numpy as np
 import csv as csv
@@ -22,10 +22,20 @@ def mydiv(x,y):
 def lexical_diversity(text):
 	return mydiv(len(set(text)),len(text))
 
+# Get the Signal over background, but penalizing statistical error
+def SOB(p,n):
+	if n==0:
+		return 0
+	er = math.sqrt(p*(1-p))/n
+	p = p - er
+	return p/(1-p + 0.0000001)
+
 
 def contains_one(s,lst):
+	if not isinstance(s,str):
+		s = s.decode('utf-8')
 	for w in lst:
-		if re.search(w,s,re.IGNORECASE):
+		if re.search(re.escape(w),s,re.IGNORECASE):
 			return 1
 	return 0
 
@@ -179,12 +189,86 @@ def check_features(trn):
 	f.write(f_str)
 	f.close()
 
+
+# Find most important words
+def important_word_finder(trn):
+	# Create texts representing all toxic comments etc. as well as all comments that are 'none of the above'. Also count the number of each type
+	labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+
+	# Create the corpus of all non-vanilla comments put together
+	df_tox = trn.query("toxic==1 or severe_toxic==1 or obscene==1 or threat==1 or insult==1 or identity_hate==1")
+	corpus = []
+	for row in df_tox.index.values:
+		comment = nltk.word_tokenize(df_tox.loc[row,'comment_text'].replace('-',' ').replace('\'','').replace('.',' '))
+		corpus += [w.upper() for w in comment]
+
+	print('\nCreated corpus')
+	
+	# Dictionary which gives the number of times a word occurs in the corpus
+	fd = {tpl[0]:tpl[1] for tpl in nltk.FreqDist(corpus).most_common(1000)}
+
+	# The set of words in the corpus
+	word_set = fd.keys()
+
+	# Words which are not too rare
+	good_words = [w for w in word_set if len(w)>3]
+
+	print('\nDefined word set')
+
+	# A dataframe for storing signal over background info
+	df = pandas.DataFrame(index=good_words, columns=labels)
+
+	# For each word, make a column in trn which tells us if the comment contains this word
+	trn_ary = trn.values
+	lst = trn.columns.values
+	col_index = {lst[i]:i for i in range(len(lst))}
+	v_contains_one = np.vectorize(lambda vec, lst: contains_one(vec, lst))
+	print("\nnp setup complete")
+	for w in df.index.values:
+		trn[w] = v_contains_one( trn_ary[:,col_index['comment_text']], [w] )
+		#trn[w] = trn.apply(lambda x: contains_one(x['comment_text'], [w]), axis=1)
+
+
+	print('\nCreated extra columns in trn')
+	
+	# Store signal over background info in df
+	for w in df.index.values:
+		df2 = trn.query(w+'==1')
+		tot_len = len(df2.index.values)
+		for label in df.columns.values:
+			signal = mydiv(len(df2.query(label+"==1").index.values),tot_len)
+			df.loc[w,label] = SOB(signal,tot_len)
+
+	print('\nFilled df')
+
+	# Compute mean
+	df['mean'] = df.mean(axis=1)
+
+	df.to_csv("sob.csv")
+	
+	print('\nSaved sob.csv')
+	
+	# Get a dictionary which stores the average (over labels) SOB value
+	hs_dict = {}	
+	for w in df.index.values:
+		hs_dict[w] = df.loc[w,'mean']
+
+	# Get a list of 'significant' words
+	ret_list = [(k, hs_dict[k]) for k in hs_dict.keys() if (hs_dict[k] > 2)]
+
+	# Write the list to a file
+	f = open("significant_words.txt",'w')
+	f.write(str(ret_list))
+	f.close()
+
+	df.to_csv("word_importance.csv")
+	
 def main():
 	# Read in the test and train files
 
 	#train = pandas.read_csv("small_train.csv")
 	train = pandas.read_csv("train.csv")
-	test = pandas.read_csv("test.csv")
+	#test = pandas.read_csv("test.csv")
 
 	# Use a smaller dataframe for testing code
 	#small_train = train.head(250)
@@ -193,43 +277,45 @@ def main():
 	#small_train.to_csv("small_train.csv")
 
 	# labels we are classifying on
-	labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+	#labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 
 	# Create prediction df
-	predict = pandas.DataFrame(columns = labels, index = test['id'])
-	print('\npredict created')
+	#predict = pandas.DataFrame(columns = labels, index = test['id'])
+	#print('\npredict created')
 
 	# Traning targets
-	target_lst = [train[label] for label in labels]
+	#target_lst = [train[label] for label in labels]
 
 	# Define features
-	decorate(train)
-	print('\ntrain decorated')
-	decorate(test)
-	print('\ntest decorated')
+	#decorate(train)
+	#print('\ntrain decorated')
+	#decorate(test)
+	#print('\ntest decorated')
 
-	## Save modified csv
-	train.to_csv("train_dec.csv")
+	# Save modified csv
+	#train.to_csv("train_dec.csv")
 
 	# Check the efficacy of the features
 	#check_features(train)
+	important_word_finder(train)
 
 	# Drop columns not used in training
-	train = train.drop(['comment_text','comment_text_tokenized','comment_text_tags','id'],axis=1)
-	test = test.drop(['comment_text','comment_text_tokenized','comment_text_tags','id'],axis=1)
-	train_features = train.drop(['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate'],axis=1)
+	#train = train.drop(['comment_text','comment_text_tokenized','comment_text_tags','id'],axis=1)
+	#test = test.drop(['comment_text','comment_text_tokenized','comment_text_tags','id'],axis=1)
+	#train_features = train.drop(['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate'],axis=1)
 
 	# Create correlation matrix
-	train.corr().to_csv("correlations.csv")
-	print("\nSaved correlation table")
+	#train.corr().to_csv("correlations.csv")
+	#print("\nSaved correlation table")
 
+	'''
 	# Create random forest
 	my_forest_lst = [RandomForestClassifier(n_estimators=100) for label in labels]
 
 	labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
 
 	importance_str = ''
-	
+
 	# train the classifiers
 	for i in range(0,len(labels)):
 		my_forest_lst[i].fit(train_features,target_lst[i])
@@ -244,9 +330,8 @@ def main():
 	f = open("important_features.txt",'w')
 	f.write(importance_str)
 	f.close()
-
+	'''
 	print("\nDone\n")
-
 
 if __name__ == '__main__':
 	main()
